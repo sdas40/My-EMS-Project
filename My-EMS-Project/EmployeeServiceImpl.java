@@ -1,79 +1,140 @@
 package com.flp.ems.service;
 
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.HashMap;
+import java.util.HashSet;
+
+
 
 import com.flp.ems.dao.EmployeeDaoImplForList;
+import com.flp.ems.domain.Department;
 import com.flp.ems.domain.Employee;
+import com.flp.ems.domain.Project;
 
-public class EmployeeServiceImpl implements IEmployeeService {
+public class EmployeeServiceImpl implements IEmployeeService<Object> {
 	
-	private int emp_id=0;
+	private String emp_id;
 	private String j_date;
 	private String dateofbirth;
 	private String Phone_no;
 	private String Name;
 	private String Add;
 	private String email_id;
+	private String Kin_id;
 	
-	Employee obj2=new Employee();
+	
+	Department depT= new Department();
+    Project proJ = new Project();
+	
+	
+	HashMap<Integer, Object> serv;
+	
+	EmployeeDaoImplForList El=new EmployeeDaoImplForList();
+	
+	static HashSet<String> hskin=new HashSet<String>();
+	static HashSet<String> hsemail=new HashSet<String>();
+	
+
+
 	@Override
-	public void AddEmployee(Map E) {
+	public void getAllEmployee() {
+		El.getAllEmployee();
 		
-		Map<Integer, String> serv=E;
-		/*for( Entry<Integer, String> e: serv.entrySet()){
-			System.out.println(e.getKey() + ":" + e.getValue());
-		}*/
-		Name=serv.get(1);
-		Add=serv.get(3);
-		Phone_no=serv.get(2);
-		j_date=serv.get(4);
-		dateofbirth=serv.get(5);
+	}
+
+
+
+	@Override
+	public void AddEmployee(HashMap E) {
+		serv=E;
 		
+		Employee obj2=new Employee();
+		
+		Kin_id=(String)serv.get(6);
+		email_id=(String)serv.get(7);
+		Name=(String)serv.get(1);
+		Add=(String)serv.get(3);
+		Phone_no=(String)serv.get(2);
+		j_date=(String)serv.get(4);
+		dateofbirth=(String)serv.get(5);
+		emp_id=(String)serv.get(8);
+		
+		
+		if(hskin.contains(Kin_id))
+		{
+			System.out.println("kin id already exists");
+			return;
+		}
+		else
+		{
+			hskin.add(Kin_id);
+			}
+		if(hsemail.contains(email_id))
+		{
+			System.out.println("email already exists");
+			return;
+		}
+		else
+		{
+			hsemail.add(email_id);
+		}
+		
+		
+		
+		 	proJ.setproject((String)serv.get(9));
+	        obj2.setProject(proJ);
+	        
+	        depT.setdepartment((String)serv.get(10));
+		    obj2.setDepartment(depT);
+		
+		
+		
+		
+		obj2.setKin_id(Kin_id);
+		obj2.setEmail_id(email_id);
 		obj2.setName(Name);
 		obj2.setPhone_no(Phone_no);
 		obj2.setAdd(Add);
 		obj2.setJ_date(j_date);
 		obj2.setdateofbirth(dateofbirth);
+		obj2.setJ_date(j_date);
+		obj2.setEmp_id(emp_id);
+
 		
-		EmployeeDaoImplForList El=new EmployeeDaoImplForList();
-		El.AddEmployee(obj2);
+
+		
+		if(obj2.equals(serv)){
+			System.out.println("same object");
+		}
+		
+			El.AddEmployee(obj2);
+		
+		
+		
 	}
+
+
+	@Override
+	public void ModifyEmployee(String name, String email, String kin_id) {
+		El.ModifyEmployee(name,email,kin_id);
+		
+	}
+
+	@Override
+	public void RemoveEmployee(String name, String email, String kin_id) {
+		El.RemoveEmployee(name, email,kin_id);
+		
+	}
+
+
+	@Override
+	public void SearchEmployee(String name, String email, String kin_id) {
+		El.SearchEmployee(name, email,kin_id);
+		
+	}
+
 
 	
 
-	@Override
-	public void ModifyEmployee() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void RemoveEmployee() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void SearchEmployee() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void getAllEmployee() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
-
-	@Override
-	public void AddEmployee() {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 	
